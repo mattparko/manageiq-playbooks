@@ -1,0 +1,12 @@
+---
+# This playbook is being used to test the retry logic in a ManageIQ state machine
+#
+# It is designed to fail immediately
+
+- name: State machine retry testing
+  hosts: localhost
+  gather_facts: false
+
+  tasks:
+    - fail:
+        msg: Failing playbook in order to test retry logic
