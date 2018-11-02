@@ -1,0 +1,30 @@
+---
+# This playbook is used to test the retry logic in a CloudForms state machine
+# using an Ansible block/rescue
+
+- name: State machine retry testing
+  hosts: localhost
+  gather_facts: false
+
+  vars:
+    - manageiq_validate_certs: false
+
+  roles:
+    - syncrou.manageiq-automate
+
+  tasks:
+    - block:
+
+        - debug:
+            msg: State retry number {{ workspace.workspace.input.objects.root.ae_state_retries }}
+
+        - fail:
+            msg: Failing on purpose to test rescue/retry
+
+      rescue:
+
+        - name: Set state status to retry
+          manageiq_automate:
+            workspace: "{{ workspace }}"
+            set_retry:
+              interval: 600
